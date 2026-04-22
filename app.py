@@ -53,9 +53,10 @@ for _, row in gdf.iterrows():
     ).add_to(mapa)
 
 # App
-st.write(gdf[["Nombre","Distancia_Km"]].sort_values("Distancia_Km").head(3)
-         .rename(columns={"Distancia_Km": "Distancia (Km)"}.reset_index(drop=True))
-)
+tabla = gdf[["Nombre", "Distancia_Km"]].sort_values("Distancia_Km").head(3)
+tabla = tabla.rename(columns={"Distancia_Km": "Distancia (Km)"})
+tabla = tabla.reset_index(drop=True)
+st.write(tabla)
 st.title("CicloParking")
 st.write("Encuentra el cicloparqueadero más cercano a ti.")
 st_folium(mapa, width=700)
