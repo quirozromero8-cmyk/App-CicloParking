@@ -36,6 +36,8 @@ if loc:
 
 mapa = folium.Map(location=[user_lat, user_lon], tiles="CartoDB Positron", zoom_start=18)
 
+gdf["Distancia"] = (gdf["Y"] - user_lat).abs() + (gdf["X"] - user_lon).abs()
+
 folium.Marker(
     location=[user_lat, user_lon],
     tooltip="Uicacion actual",
@@ -51,6 +53,7 @@ for _, row in gdf.iterrows():
     ).add_to(mapa)
 
 # App
+st.write(gdf[["Nombre", "Distancia"]].sort_values("Distancia").head(5))
 st.title("CicloParking")
 st.write("Encuentra el cicloparqueadero más cercano a ti.")
 st_folium(mapa, width=700)
