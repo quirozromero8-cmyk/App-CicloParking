@@ -38,7 +38,7 @@ if loc:
     user_lon = loc['coords']['longitude']
 
 
-mapa = folium.Map(location=[user_lat, user_lon], tiles="OpenStreetMap", zoom_start=15)
+mapa = folium.Map(location=[user_lat, user_lon], tiles="CartoDB positron", zoom_start=15)
 
 #Distance in m user - parking
 gdf["Distancia_m"] = (((gdf["Y"] - user_lat).abs() + (gdf["X"] - user_lon).abs()) * 111000).astype(int)
