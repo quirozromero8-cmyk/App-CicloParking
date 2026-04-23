@@ -52,30 +52,32 @@ App Cicloparking/
 ## How to Run
 
 ### Clone the repository
+```bash
 
 git clone https://github.com/quirozromero8-cmyk/CicloParking.git
 cd CicloParking
-
+```
 ### Create a virtual environment
 
+```bash
 python -m venv venv
-
+```
 ### Activate the virtual environment
-
+```bash
 .\venv\Scripts\activate
-
+```
 ### Install dependencies
-
+```bash
 pip install -r requirements.txt
-
+````
 ### Run the Streamlit app
-
+```bash
 streamlit run app.py
-
+```
 ### Open in your browser
-
+```bash
 http://localhost:8501
-
+```
 ## Autor:
 
 Tomas Eduardo Quiroz
