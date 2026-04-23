@@ -31,10 +31,12 @@ gdf = gpd.GeoDataFrame(
 )
 
 # User location
-
-user_lat = 4.6097
-user_lon = -74.0817
-
+try:
+    user_lat = 4.6097
+    user_lon = -74.0817
+except:
+    user_lat = loc['latitude']
+    user_lon = loc['longitude']
 if loc:
     user_lat = loc['coords']['latitude']
     user_lon = loc['coords']['longitude']
