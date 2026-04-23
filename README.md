@@ -75,3 +75,7 @@ streamlit run app.py
 ### Open in your browser
 
 http://localhost:8501
+
+## Autor:
+
+Tomas Eduardo Quiroz
