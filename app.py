@@ -4,7 +4,6 @@ import geopandas as gpd
 import streamlit as st
 from streamlit_js_eval import get_geolocation
 from streamlit_folium import st_folium
-import requests
 loc = get_geolocation()
 
 df = pd.read_csv("Cicloparqueadero.csv")
@@ -31,8 +30,7 @@ gdf = gpd.GeoDataFrame(
     crs="EPSG:4326"
 )
 
-
-#Ubication user
+# User location
 if loc:
     user_lat = loc['coords']['latitude']
     user_lon = loc['coords']['longitude']
@@ -67,7 +65,7 @@ for _, row in recomendados.iterrows():
 st.title("CicloParking")
 st.write("Encuentra el cicloparqueadero más cercano a ti.")
 
-tabla = recomendados[["Nombre", "Direccion"]].rename(columns={"Nombre": "Ubicacion", "Direccion": "Dirección"}.hide_index=True)
+tabla = recomendados[["Nombre", "Direccion"]].rename(columns={"Nombre": "Ubicacion", "Direccion": "Dirección"})
 
 colum1, colum2 =st.columns(2)
 
@@ -78,6 +76,6 @@ with colum1:
 with colum2:
     st.metric(label="Horario de Atencion", value = recomendados.loc[0, "Horarios"])
 
-st.write(tabla)
+st.table(tabla)
 
-st_folium(mapa, width=700)
+st_folium(mapa, width=800, height=500)
