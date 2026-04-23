@@ -6,6 +6,16 @@ from streamlit_js_eval import get_geolocation
 from streamlit_folium import st_folium
 loc = get_geolocation()
 
+st.markdown("""
+    <style>
+    html, body, [data-testid="stAppViewContainer"] {
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        height: auto !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 df = pd.read_csv("Cicloparqueadero.csv")
 
 df['CLASECICLOP'] = df['CLASECICLOP'].replace({'F': 1, 'I': 2}).astype(int)
