@@ -64,10 +64,20 @@ for _, row in recomendados.iterrows():
     ).add_to(mapa)
 
 # App
-tabla = recomendados[["Nombre", "Distancia_m", "Categoria"]]
-tabla = tabla.rename(columns={"Distancia_m": "Distancia (m)"})
-
-st.write(tabla)
 st.title("CicloParking")
 st.write("Encuentra el cicloparqueadero más cercano a ti.")
+
+tabla = recomendados[["Nombre", "Direccion"]].rename(columns={"Nombre": "Ubicacion", "Direccion": "Dirección"}.hide_index=True)
+
+colum1, colum2 =st.columns(2)
+
+with colum1:
+    st.metric(label="Parkeadero Recomendado", value = recomendados.iloc[0]["Nombre"])
+    st.metric(label="Direccion", value = recomendados.iloc[0]["Direccion"])
+
+with colum2:
+    st.metric(label="Horario de Atencion", value = recomendados.loc[0, "Horarios"])
+
+st.write(tabla)
+
 st_folium(mapa, width=700)
