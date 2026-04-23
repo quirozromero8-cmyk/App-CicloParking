@@ -1,0 +1,6 @@
+Pandas
+geopandas
+folium
+streamlit
+streamlit-folium
+streamlit_js_eval
