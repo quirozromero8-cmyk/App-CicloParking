@@ -31,6 +31,10 @@ gdf = gpd.GeoDataFrame(
 )
 
 # User location
+
+user_lat = 4.6097
+user_lon = -74.0817
+
 if loc:
     user_lat = loc['coords']['latitude']
     user_lon = loc['coords']['longitude']
@@ -70,7 +74,7 @@ tabla = recomendados[["Nombre", "Direccion"]].rename(columns={"Nombre": "Ubicaci
 colum1, colum2 =st.columns(2)
 
 with colum1:
-    st.metric(label="Parkeadero Recomendado", value = recomendados.iloc[0]["Nombre"])
+    st.metric(label="Parqueadero Recomendado", value = recomendados.iloc[0]["Nombre"])
     st.metric(label="Direccion", value = recomendados.iloc[0]["Direccion"])
 
 with colum2:
