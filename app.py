@@ -41,16 +41,17 @@ gdf = gpd.GeoDataFrame(
 )
 
 # User location
-try:
-    user_lat = 4.6097
-    user_lon = -74.0817
-except:
-    user_lat = loc['latitude']
-    user_lon = loc['longitude']
-if loc:
-    user_lat = loc['coords']['latitude']
-    user_lon = loc['coords']['longitude']
 
+user_lat = 4.6097
+user_lon = -74.0817
+
+if loc:
+    try:
+        user_lat = loc['coords']['latitude']
+        user_lon = loc['coords']['longitude']
+    except (KeyError, TypeError):
+        user_lat = loc['latitude']
+        user_lon = loc['longitude']
 
 mapa = folium.Map(location=[user_lat, user_lon], tiles="CartoDB positron", zoom_start=15)
 
