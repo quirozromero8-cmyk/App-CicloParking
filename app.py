@@ -4,7 +4,10 @@ import geopandas as gpd
 import streamlit as st
 from streamlit_js_eval import get_geolocation
 from streamlit_folium import st_folium
+from geopy.geocoders import Nominatim  # 🆕 NUEVO
+
 loc = get_geolocation()
+geolocator = Nominatim(user_agent="cicloparking")  # 🆕 NUEVO
 
 st.markdown("""
     <style>
@@ -40,12 +43,27 @@ gdf = gpd.GeoDataFrame(
     crs="EPSG:4326"
 )
 
-# User location
+# App
+st.title("CicloParking")
+st.write("Encuentra el cicloparqueadero más cercano a ti.")
 
+# 🆕 NUEVO - Caja de búsqueda por dirección
+direccion = st.text_input("🔍 O busca por dirección", placeholder="Ej: Calle 100 con Carrera 15")
+
+# User location
 user_lat = 4.6097
 user_lon = -74.0817
 
-if loc:
+# 🆕 NUEVO - Prioridad: dirección escrita > GPS > Bogotá centro por defecto
+if direccion:
+    resultado = geolocator.geocode(f"{direccion}, Bogotá, Colombia")
+    if resultado:
+        user_lat = resultado.latitude
+        user_lon = resultado.longitude
+        st.success("Ubicación encontrada ✅")
+    else:
+        st.warning("No encontramos esa dirección, intenta de nuevo.")
+elif loc:
     try:
         user_lat = loc['coords']['latitude']
         user_lon = loc['coords']['longitude']
@@ -61,8 +79,7 @@ gdf["Distancia_m"] = (((gdf["Y"] - user_lat).abs() + (gdf["X"] - user_lon).abs()
 # Recomendations based on category and distance
 oro   = gdf[gdf["Categoria"] == "Oro"].sort_values("Distancia_m")
 otros = gdf[gdf["Categoria"] != "Oro"].sort_values("Distancia_m")
-recomendados = pd.concat([oro.head(1), otros.head(2)]).reset_index(drop=True) #Olny the 3 best parkings
-
+recomendados = pd.concat([oro.head(1), otros.head(2)]).reset_index(drop=True)
 
 folium.Marker(
     location=[user_lat, user_lon],
@@ -78,21 +95,16 @@ for _, row in recomendados.iterrows():
         icon=folium.Icon(color=color, icon="bicycle", prefix="fa")
     ).add_to(mapa)
 
-# App
-st.title("CicloParking")
-st.write("Encuentra el cicloparqueadero más cercano a ti.")
-
 tabla = recomendados[["Nombre", "Direccion"]].rename(columns={"Nombre": "Ubicacion", "Direccion": "Dirección"})
 
-colum1, colum2 =st.columns(2)
+colum1, colum2 = st.columns(2)
 
 with colum1:
-    st.metric(label="Parqueadero Recomendado", value = recomendados.iloc[0]["Nombre"])
-    st.metric(label="Direccion", value = recomendados.iloc[0]["Direccion"])
+    st.metric(label="Parqueadero Recomendado", value=recomendados.iloc[0]["Nombre"])
+    st.metric(label="Direccion", value=recomendados.iloc[0]["Direccion"])
 
 with colum2:
-    st.metric(label="Horario de Atencion", value = recomendados.loc[0, "Horarios"])
+    st.metric(label="Horario de Atencion", value=recomendados.loc[0, "Horarios"])
 
 st.table(tabla)
-
 st_folium(mapa, width=800, height=500)
