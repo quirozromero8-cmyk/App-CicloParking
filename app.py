@@ -4,10 +4,10 @@ import geopandas as gpd
 import streamlit as st
 from streamlit_js_eval import get_geolocation
 from streamlit_folium import st_folium
-from geopy.geocoders import Nominatim  # 🆕 NUEVO
+from geopy.geocoders import Nominatim
 
 loc = get_geolocation()
-geolocator = Nominatim(user_agent="cicloparking")  # 🆕 NUEVO
+geolocator = Nominatim(user_agent="cicloparking")
 
 st.markdown("""
     <style>
@@ -47,14 +47,15 @@ gdf = gpd.GeoDataFrame(
 st.title("CicloParking")
 st.write("Encuentra el cicloparqueadero más cercano a ti.")
 
-# 🆕 NUEVO - Caja de búsqueda por dirección
-direccion = st.text_input("🔍 O busca por dirección", placeholder="Ej: Calle 100 con Carrera 15")
+#Caja de búsqueda por dirección
+direccion = st.text_input("🔍 Buscar dirección", placeholder="Ej: Calle 100 con Carrera 15")
 
 # User location
 user_lat = 4.6097
 user_lon = -74.0817
 
-# 🆕 NUEVO - Prioridad: dirección escrita > GPS > Bogotá centro por defecto
+# Dar prioridad a la ubicacion: dirección escrita > GPS > Bogotá centro por defecto
+
 if direccion:
     resultado = geolocator.geocode(f"{direccion}, Bogotá, Colombia")
     if resultado:
